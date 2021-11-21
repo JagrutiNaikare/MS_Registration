@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import javax.transaction.Transactional;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.appuser.AppUser;
@@ -24,7 +26,7 @@ public class RegistrationService {
 	private final EmailSender emailSender;
 	private final ConfirmationTokenService confirmationTokenService;
 
-	public String register(RegistrationRequest request) {
+	public ResponseEntity<APIResponse> register(RegistrationRequest request) {
 
 		boolean isValidEmail = emailValidator.test(request.getEmail());
 		if (!isValidEmail) {
@@ -41,12 +43,12 @@ public class RegistrationService {
                 request.getEmail(),
                 buildEmail(request.getFirstName(), link));
 
-        return token;
+//        return token;
 		
-//		APIResponse apiResponse = new APIResponse();
-//		apiResponse.setMessage("Token created");
-//		apiResponse.setStatus(HttpStatus.CREATED);
-//		return new ResponseEntity<APIResponse>(apiResponse, HttpStatus.CREATED);
+		APIResponse apiResponse = new APIResponse();
+		apiResponse.setMessage("Token created");
+		apiResponse.setStatus(HttpStatus.CREATED);
+		return new ResponseEntity<APIResponse>(apiResponse, HttpStatus.CREATED);
 	}
 	
 	 @Transactional
